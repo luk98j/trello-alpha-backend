@@ -1,0 +1,1 @@
+In this directory we want to keep our sql queries
