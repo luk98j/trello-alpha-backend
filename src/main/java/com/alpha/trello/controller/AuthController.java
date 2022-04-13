@@ -1,11 +1,20 @@
 package com.alpha.trello.controller;
 
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.alpha.trello.config.*;
+import com.alpha.trello.dto.*;
+import com.alpha.trello.entity.Role;
+import com.alpha.trello.entity.User;
+import com.alpha.trello.model.authentication.*;
+import com.alpha.trello.repository.RoleRepository;
+import com.alpha.trello.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,14 +27,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.alpha.trello.model.authentication.User;
-import com.alpha.trello.config.LoginRequest;
-import com.alpha.trello.config.JwtResponse;
-import com.alpha.trello.model.authentication.RoleRepository;
-import com.alpha.trello.model.authentication.UserRepository;
-import com.alpha.trello.config.JwtUtils;
-import com.alpha.trello.config.UserDetailsImpl;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -64,8 +65,29 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
-                userDetails.getEmail(),
                 roles));
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Username is already taken!"));
+        }
+        // Create new user's account
+        User user = new User(signUpRequest.getUsername(),
+                encoder.encode(signUpRequest.getPassword()),
+                signUpRequest.getName(),
+                signUpRequest.getLastName());
+
+        Set<Role> roles = new HashSet<>();
+        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        roles.add(adminRole);
+        user.setRoles(roles);
+        userRepository.save(user);
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
 }

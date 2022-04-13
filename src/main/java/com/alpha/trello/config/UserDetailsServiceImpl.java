@@ -1,5 +1,6 @@
 package com.alpha.trello.config;
 
+import com.alpha.trello.dto.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -7,8 +8,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.alpha.trello.model.authentication.User;
-import com.alpha.trello.model.authentication.UserRepository;
+import com.alpha.trello.entity.User;
+import com.alpha.trello.repository.UserRepository;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {

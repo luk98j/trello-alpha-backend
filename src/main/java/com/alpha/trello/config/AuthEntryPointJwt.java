@@ -21,10 +21,7 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException, ServletException {
         logger.error("Unauthorized error t: {}", authException.getMessage());
-        if(authException.getMessage() == "User is disabled")
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Użytkownik nie jest aktywowany");
-        else
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Podano błędny login lub hasło");
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
     }
 
 }

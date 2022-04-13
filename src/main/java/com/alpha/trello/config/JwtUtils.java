@@ -1,5 +1,6 @@
 package com.alpha.trello.config;
 
+import com.alpha.trello.dto.UserDetailsImpl;
 import io.jsonwebtoken.*;
 
 import org.slf4j.Logger;
@@ -14,10 +15,10 @@ import java.util.Date;
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-    @Value("${ppl.app.jwtSecret}")
+    @Value("${trello.app.jwtSecret}")
     private String jwtSecret;
 
-    @Value("${ppl.app.jwtExpirationMs}")
+    @Value("${trello.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
     public String generateJwtToken(Authentication authentication){
