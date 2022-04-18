@@ -1,0 +1,24 @@
+CREATE TABLE users (
+    id serial PRIMARY KEY,
+    username VARCHAR (20) UNIQUE NOT NULL,
+    name VARCHAR (50) NOT NULL,
+    last_name VARCHAR (50) NOT NULL,
+    password VARCHAR (255) NOT NULL
+);
+
+CREATE TABLE roles (
+    id integer PRIMARY KEY,
+    name VARCHAR (50) UNIQUE NOT NULL
+);
+
+CREATE TABLE user_roles(
+    user_id INT NOT NULL,
+    role_id INT NOT NULL,
+    FOREIGN KEY (user_id)
+          REFERENCES users (id),
+      FOREIGN KEY (role_id)
+          REFERENCES roles (id)
+);
+
+INSERT INTO roles(id,name) values(1, 'ROLE_ADMIN');
+INSERT INTO roles(id,name) values(2, 'ROLE_USER');
