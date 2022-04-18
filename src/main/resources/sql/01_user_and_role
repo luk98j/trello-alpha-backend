@@ -19,3 +19,6 @@ CREATE TABLE user_roles(
       FOREIGN KEY (role_id)
           REFERENCES roles (id)
 );
+
+INSERT INTO roles(id,name) values(1, 'ROLE_ADMIN');
+INSERT INTO roles(id,name) values(2, 'ROLE_USER');
