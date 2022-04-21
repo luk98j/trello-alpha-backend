@@ -58,6 +58,12 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "user_trello_table",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "table_id"))
+    private Set<TrelloTable> trelloTables = new HashSet<>();
+
 //    @JsonFormat(pattern="yyyy-mm-dd")
 //    @Column(name="timestamp")
 //    private Date timeStamp;
