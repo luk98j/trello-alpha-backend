@@ -1,4 +1,4 @@
-package com.alpha.trello.dto;
+package com.alpha.trello.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TempDto {
+public class TempEntity {
     @Id
     @Column(name = "id")
     private int id;
