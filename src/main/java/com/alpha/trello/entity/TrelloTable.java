@@ -3,6 +3,8 @@ package com.alpha.trello.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -19,5 +21,7 @@ public class TrelloTable {
     @Column
     private String title;
 
-
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "trello_table_trello_list")
+    private Set<TrelloList> trelloList = new HashSet<>();
 }
