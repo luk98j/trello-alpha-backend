@@ -1,0 +1,14 @@
+CREATE TABLE trello_card (
+    id serial PRIMARY KEY,
+    title VARCHAR (150) NOT NULL,
+    description VARCHAR(4096)
+);
+
+CREATE TABLE trello_list_trello_card(
+    list_id INT NOT NULL,
+    card_id INT NOT NULL,
+    FOREIGN KEY (list_id)
+          REFERENCES trello_list (id),
+      FOREIGN KEY (card_id)
+          REFERENCES trello_card (id)
+);

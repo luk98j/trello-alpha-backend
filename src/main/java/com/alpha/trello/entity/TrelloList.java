@@ -19,10 +19,16 @@ public class TrelloList {
     @Column
     private String title;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "user_trello_table",
+            joinColumns = @JoinColumn(name = "list_id"),
+            inverseJoinColumns = @JoinColumn(name = "card_id"))
+    private Set<TrelloCard> trelloCardSet = new HashSet<>();
+
     public TrelloList() {
     }
 
-    public TrelloList(String title, Integer table) {
+    public TrelloList(String title) {
         this.title = title;
     }
 

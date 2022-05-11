@@ -4,11 +4,8 @@ import com.alpha.trello.dto.MessageResponse;
 import com.alpha.trello.dto.TrelloListRequest;
 import com.alpha.trello.entity.TrelloList;
 import com.alpha.trello.entity.TrelloTable;
-import com.alpha.trello.entity.User;
 import com.alpha.trello.repository.TrelloListRepository;
 import com.alpha.trello.repository.TrelloTableRepository;
-import com.alpha.trello.repository.UserRepository;
-import org.hibernate.mapping.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -34,4 +31,22 @@ public class TrelloListService {
         return ResponseEntity.ok().body(list.getTrelloList());
     }
 
+
+    public ResponseEntity<?> addList(TrelloListRequest request) {
+        if(request.getTableId() != null && request.getTitle()!=null){
+            TrelloTable table = tableRepository.findById(request.getTableId()).get();
+            TrelloList trelloList = new TrelloList(request.getTitle());
+            Set<TrelloList> trelloLists = new HashSet<>();
+            trelloLists.addAll(table.getTrelloList());
+            trelloLists.add(trelloList);
+            table.setTrelloList(trelloLists);
+            trelloListRepository.save(trelloList);
+            tableRepository.save(table);
+            return ResponseEntity.ok().body(new MessageResponse("List created"));
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Table not exists!"));
+        }
+    }
 }

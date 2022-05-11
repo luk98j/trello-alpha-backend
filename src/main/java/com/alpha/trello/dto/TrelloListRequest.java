@@ -8,7 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class TrelloListRequest {
-    private Long id;
     private String title;
-    private Integer table_id;
+    private Long tableId;
 }

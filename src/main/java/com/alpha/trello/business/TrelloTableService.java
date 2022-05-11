@@ -27,7 +27,6 @@ public class TrelloTableService {
     }
 
     public ResponseEntity<?> createTable(TrelloTableRequest trelloTableRequest){
-        TrelloTable trelloTable = new TrelloTable();
         if(trelloTableRequest.getUserName() != null && userRepository.existsByUsername(trelloTableRequest.getUserName())){
             User user = userRepository.findByUsername(trelloTableRequest.getUserName()).get();
             TrelloTable table = TrelloTable.builder().title(trelloTableRequest.getTitle()).build();
@@ -48,6 +47,11 @@ public class TrelloTableService {
     public ResponseEntity<?> getAllTable(String userNameRequest){
         User user = userRepository.findByUsername(userNameRequest).get();
         return ResponseEntity.ok().body(user.getTrelloTables());
+    }
+
+    public ResponseEntity<?> getInfoAboutTable(Long id){
+        TrelloTable table = trelloTableRepository.findById(id).get();
+        return ResponseEntity.ok().body(table);
     }
 
 }

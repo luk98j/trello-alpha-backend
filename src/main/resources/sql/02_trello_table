@@ -1,6 +1,6 @@
 CREATE TABLE trello_table (
     id serial PRIMARY KEY,
-    title VARCHAR (150) UNIQUE NOT NULL
+    title VARCHAR (150) NOT NULL
 );
 
 CREATE TABLE user_trello_table(
