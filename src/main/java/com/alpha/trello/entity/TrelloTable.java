@@ -15,7 +15,7 @@ import java.util.Set;
 @Builder
 public class TrelloTable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column

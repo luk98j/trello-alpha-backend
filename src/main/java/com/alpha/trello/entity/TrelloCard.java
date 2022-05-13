@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Table(name="trello_card")
 public class TrelloCard {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column

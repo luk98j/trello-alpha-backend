@@ -13,14 +13,14 @@ import java.util.Set;
 @Table(name="trello_list")
 public class TrelloList {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column
     private String title;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(	name = "user_trello_table",
+    @JoinTable(	name = "trello_list_trello_card",
             joinColumns = @JoinColumn(name = "list_id"),
             inverseJoinColumns = @JoinColumn(name = "card_id"))
     private Set<TrelloCard> trelloCardSet = new HashSet<>();

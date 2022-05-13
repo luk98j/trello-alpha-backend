@@ -5,8 +5,8 @@ CREATE TABLE trello_card (
 );
 
 CREATE TABLE trello_list_trello_card(
-    list_id INT NOT NULL,
-    card_id INT NOT NULL,
+    list_id INT,
+    card_id INT,
     FOREIGN KEY (list_id)
           REFERENCES trello_list (id),
       FOREIGN KEY (card_id)

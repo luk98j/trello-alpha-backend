@@ -4,8 +4,8 @@ CREATE TABLE trello_table (
 );
 
 CREATE TABLE user_trello_table(
-    user_id INT NOT NULL,
-    table_id INT NOT NULL,
+    user_id INT,
+    table_id INT,
     FOREIGN KEY (user_id)
           REFERENCES users (id),
       FOREIGN KEY (table_id)
