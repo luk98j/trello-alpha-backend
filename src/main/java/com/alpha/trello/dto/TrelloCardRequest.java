@@ -9,6 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class TrelloCardRequest {
     private Long listId;
+    private Long cardId;
     private String title;
     private String description;
 }

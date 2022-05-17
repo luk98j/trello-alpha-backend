@@ -53,4 +53,20 @@ public class TrelloCardService {
         return ResponseEntity.ok().body(trelloList.getTrelloCardSet());
     }
 
+    public ResponseEntity<?> editCard(TrelloCardRequest trelloCardRequest) {
+        if(trelloCardRequest.getCardId() != null){
+            TrelloCard trelloCard = trelloCardRepository.getById(trelloCardRequest.getCardId());
+            trelloCard.setTitle(trelloCardRequest.getTitle());
+            if(trelloCardRequest.getDescription()!=null){
+                trelloCard.setDescription(trelloCardRequest.getDescription());
+            }
+            trelloCardRepository.save(trelloCard);
+            return ResponseEntity.ok().body(new MessageResponse("Card edited"));
+
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: KABOOM!"));
+        }
+    }
 }
