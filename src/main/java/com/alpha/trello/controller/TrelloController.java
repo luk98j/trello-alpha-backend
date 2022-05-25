@@ -86,7 +86,10 @@ public class TrelloController {
     public ResponseEntity<?> addComment(@RequestBody TrelloCommentRequest trelloCommentRequest) {
         return trelloCommentService.addComment(trelloCommentRequest);
     }
-
+    @PostMapping("/add-todo")
+    public ResponseEntity<?> addTodo(@RequestBody TrelloTodoRequest trelloTodoRequest) {
+        return trelloTodoService.addTodo(trelloTodoRequest);
+    }
     @GetMapping("/get-todos")
     public ResponseEntity<?> getAllTodos(@RequestParam("id") Long id) {
         return trelloTodoService.getAllTodos(id);
