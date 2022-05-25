@@ -90,6 +90,10 @@ public class TrelloController {
     public ResponseEntity<?> addTodo(@RequestBody TrelloTodoRequest trelloTodoRequest) {
         return trelloTodoService.addTodo(trelloTodoRequest);
     }
+    @PostMapping("/add-todotask")
+    public ResponseEntity<?> addTodoTask(@RequestBody TrelloTodoTaskRequest trelloTodoTaskRequest) {
+        return trelloTodoTaskService.addTodoTask(trelloTodoTaskRequest);
+    }
     @GetMapping("/get-todos")
     public ResponseEntity<?> getAllTodos(@RequestParam("id") Long id) {
         return trelloTodoService.getAllTodos(id);
