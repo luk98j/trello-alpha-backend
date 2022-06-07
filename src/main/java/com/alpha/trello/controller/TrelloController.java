@@ -103,4 +103,24 @@ public class TrelloController {
     public ResponseEntity<?> getAllTasks(@RequestParam("id") Long id) {
         return trelloTodoTaskService.getAllTodoTasks(id);
     }
+
+    @PostMapping("/post-shared-table")
+    public ResponseEntity<?> postSharedTable(@RequestBody TrelloSharedRequest trelloSharedRequest){
+        return trelloTableService.postSharedTable(trelloSharedRequest);
+    }
+
+    @GetMapping("/get-shared-tables")
+    public ResponseEntity<?> getSharedTables(@RequestParam("username") String userNameRequest){
+        return trelloTableService.getSharedTables(userNameRequest);
+    }
+
+    @GetMapping("/get-user-shared-table")
+    public ResponseEntity<?> getUserSharedTable(@RequestParam("id") Long id){
+        return trelloTableService.getUserSharedTable(id);
+    }
+
+    @PostMapping("/delete-user-from-shared-table")
+    public ResponseEntity<?> deleteUserFromSharedTable(@RequestBody TrelloSharedRequest trelloSharedRequest){
+        return trelloTableService.deleteUserFromTable(trelloSharedRequest);
+    }
 }
