@@ -4,10 +4,10 @@ import com.alpha.trello.dto.*;
 import com.alpha.trello.entity.TrelloTable;
 import com.alpha.trello.entity.User;
 import com.alpha.trello.repository.TrelloTableRepository;
-import com.alpha.trello.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import com.alpha.trello.repository.UserRepository;
 
 import java.util.*;
 
@@ -48,7 +48,9 @@ public class TrelloTableService {
 
     public ResponseEntity<?> getInfoAboutTable(Long id){
         TrelloTable table = trelloTableRepository.findById(id).get();
-        return ResponseEntity.ok().body(table);
+        List<User> userList = userRepository.findAllByTrelloTablesId(id);
+        TrelloTableResponse trelloTableResponse = new TrelloTableResponse(table.getId(), table.getTitle(), userList.get(0).getUsername());
+        return ResponseEntity.ok().body(trelloTableResponse);
     }
 
     public ResponseEntity<?> postSharedTable(TrelloSharedRequest trelloSharedRequest){
@@ -84,16 +86,7 @@ public class TrelloTableService {
     public ResponseEntity<?> getUserSharedTable(Long id) {
          Optional<TrelloTable> optionalTrelloTable = trelloTableRepository.findById(id);
          if(optionalTrelloTable.isPresent()){
-             List<User> userSharedTableList = userRepository.findAllByTrelloSharedTablesId(id);
-             if(!userSharedTableList.isEmpty()){
-                     List<String> usernameList = new ArrayList<>();
-                     for(User user: userSharedTableList){
-                         usernameList.add(user.getUsername());
-                        }
-                     return ResponseEntity.ok().body(new ListOfUsernameResponseDto(usernameList));
-             } else {
-                 return ResponseEntity.ok().body("");
-             }
+             return ResponseEntity.ok().body(userRepository.findAllByTrelloSharedTablesId(id));
          } else {
              return ResponseEntity.badRequest().body("Table not found");
          }
