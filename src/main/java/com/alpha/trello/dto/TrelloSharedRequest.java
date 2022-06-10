@@ -7,9 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class TrelloCardRequest {
-    private Long listId;
-    private Long cardId;
-    private String title;
-    private String description;
+public class TrelloSharedRequest {
+    private String userName;
+    private Long tableId;
 }

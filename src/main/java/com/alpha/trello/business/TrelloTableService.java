@@ -1,18 +1,15 @@
 package com.alpha.trello.business;
 
-import com.alpha.trello.dto.MessageResponse;
-import com.alpha.trello.dto.TrelloTableRequest;
-import com.alpha.trello.dto.UserNameRequest;
+import com.alpha.trello.dto.*;
 import com.alpha.trello.entity.TrelloTable;
 import com.alpha.trello.entity.User;
 import com.alpha.trello.repository.TrelloTableRepository;
-import com.alpha.trello.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import com.alpha.trello.repository.UserRepository;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class TrelloTableService {
@@ -51,7 +48,66 @@ public class TrelloTableService {
 
     public ResponseEntity<?> getInfoAboutTable(Long id){
         TrelloTable table = trelloTableRepository.findById(id).get();
-        return ResponseEntity.ok().body(table);
+        List<User> userList = userRepository.findAllByTrelloTablesId(id);
+        TrelloTableResponse trelloTableResponse = new TrelloTableResponse(table.getId(), table.getTitle(), userList.get(0).getUsername());
+        return ResponseEntity.ok().body(trelloTableResponse);
     }
 
+    public ResponseEntity<?> postSharedTable(TrelloSharedRequest trelloSharedRequest){
+        Optional<User> optionalUser = userRepository.findByUsername(trelloSharedRequest.getUserName());
+        if(optionalUser.isPresent()){
+            User user = optionalUser.get();
+            Optional<TrelloTable> optionalTrelloTable = trelloTableRepository.findById(trelloSharedRequest.getTableId());
+            if(optionalTrelloTable.isPresent()){
+                Set<TrelloTable> setList = user.getTrelloSharedTables();
+                setList.add(optionalTrelloTable.get());
+                user.setTrelloSharedTables(setList);
+                userRepository.save(user);
+                return ResponseEntity.ok().body("Successful sharing");
+            } else {
+                return ResponseEntity.badRequest().body("Table not found");
+            }
+        } else {
+            return ResponseEntity.badRequest().body("User not found");
+        }
+    }
+
+    public ResponseEntity<?> getSharedTables(String userNameRequest) {
+        Optional<User> optionalUser = userRepository.findByUsername(userNameRequest);
+        if(optionalUser.isPresent()){
+            User user = optionalUser.get();
+            return ResponseEntity.ok().body(user.getTrelloSharedTables());
+        } else {
+            return ResponseEntity.badRequest().body("User not found");
+        }
+    }
+
+
+    public ResponseEntity<?> getUserSharedTable(Long id) {
+         Optional<TrelloTable> optionalTrelloTable = trelloTableRepository.findById(id);
+         if(optionalTrelloTable.isPresent()){
+             return ResponseEntity.ok().body(userRepository.findAllByTrelloSharedTablesId(id));
+         } else {
+             return ResponseEntity.badRequest().body("Table not found");
+         }
+    }
+
+    public ResponseEntity<?> deleteUserFromTable(TrelloSharedRequest trelloSharedRequest) {
+        Optional<User> optionalUser = userRepository.findByUsername(trelloSharedRequest.getUserName());
+        if(optionalUser.isPresent()){
+            User user = optionalUser.get();
+            Optional<TrelloTable> optionalTrelloTable = trelloTableRepository.findById(trelloSharedRequest.getTableId());
+            if(optionalTrelloTable.isPresent()){
+                Set<TrelloTable> setList = user.getTrelloSharedTables();
+                setList.remove(optionalTrelloTable.get());
+                user.setTrelloSharedTables(setList);
+                userRepository.save(user);
+                return ResponseEntity.ok().body("Successful deletion of user");
+            } else {
+                return ResponseEntity.badRequest().body("Table not found");
+            }
+        } else {
+            return ResponseEntity.badRequest().body("User not found");
+        }
+    }
 }
